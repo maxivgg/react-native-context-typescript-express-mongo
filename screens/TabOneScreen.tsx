@@ -1,32 +1,39 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import * as React from "react";
+import { useContext } from "react";
+import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
+import Post from "../components/Post";
+import Context from "../context/context";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-
-export default function TabOneScreen() {
+export default function TabOneScreen(props: any) {
+  const context = useContext(Context);
+  const posts = context.state.posts;
+  const isLoading = context.isLoading;
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
-    </View>
+    <ScrollView style={styles.container}>
+      {!isLoading && posts?.length > 0 ? (
+        posts?.map((post: any, index: number) => (
+          <Post key={index} post={post} navigation={props.navigation} />
+        ))
+      ) : (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large"/>
+        </View>
+      )}
+    </ScrollView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  loader: {
+    left: 0,
+    right: 0,
+    top: 250,
+    bottom: 0,
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 999,
   },
 });
