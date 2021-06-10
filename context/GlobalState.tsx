@@ -28,16 +28,9 @@ export default function GlobalState(props: any) {
       .post(URL, request)
       .then(() => fechPost())
       .catch((error) => console.log(error));
-    setLoading(false);
   };
 
   const updatePost = async (request: Post) => {
-    /*for (var index = 0; index < state.posts.length; index++) {
-      if (post._id === state.posts[index]._id) {
-        state.posts[index].title = post.title;
-        state.posts[index].body = post.body;
-      }
-    }*/
     setLoading(true);
     await axios
     .put(URL + "/" + request._id, request)
@@ -51,7 +44,6 @@ export default function GlobalState(props: any) {
       .delete(URL + "/" + postId)
       .then(() => fechPost())
       .catch((error) => console.log(error));
-    setLoading(false);
   };
 
   return (
